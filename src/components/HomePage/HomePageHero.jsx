@@ -1,4 +1,5 @@
 "use client"
+
 import { useState, useEffect } from "react"
 import { ChevronLeft, ChevronRight, Calendar, Clock, User } from "lucide-react"
 
@@ -34,7 +35,7 @@ export default function HomePageHero() {
   useEffect(() => {
     const timer = setInterval(() => {
       setCurrentSlide((prev) => (prev + 1) % slides.length)
-    }, 5000)
+    }, 6000)
     return () => clearInterval(timer)
   }, [slides.length])
 
@@ -53,7 +54,14 @@ export default function HomePageHero() {
 
       if (response.ok) {
         alert("Booking request sent successfully!")
-        setFormData({ name: "", email: "", phone: "", service: "doctor-consultation", date: "", time: "" })
+        setFormData({
+          name: "",
+          email: "",
+          phone: "",
+          service: "doctor-consultation",
+          date: "",
+          time: "",
+        })
       }
     } catch (error) {
       alert("Failed to send booking request")
@@ -64,149 +72,147 @@ export default function HomePageHero() {
   const prevSlide = () => setCurrentSlide((prev) => (prev - 1 + slides.length) % slides.length)
 
   return (
-    <section className="relative h-screen overflow-hidden">
-      {/* Background Slider */}
+    <section className="relative min-h-screen overflow-hidden pt-1 sm:pt-1 pb-1">
+      {/* Background Slides */}
       <div className="absolute inset-0">
         {slides.map((slide, index) => (
           <div
             key={index}
-            className={`absolute inset-0 transition-opacity duration-1000 ${
-              index === currentSlide ? "opacity-100" : "opacity-0"
+            className={`absolute inset-0 transition-opacity duration-1000 ease-in-out ${
+              index === currentSlide ? "opacity-100 z-0" : "opacity-0"
             }`}
           >
-            <img src={slide.image || "/placeholder.svg"} alt={slide.title} className="w-full h-full object-cover" />
-            <div className="absolute inset-0 bg-black bg-opacity-50"></div>
+            <img
+              src={slide.image}
+              alt={slide.title}
+              className="w-full h-full object-cover"
+            />
+            <div className="absolute inset-0 bg-black/50" />
           </div>
         ))}
       </div>
 
-      {/* Slider Controls */}
+      {/* Controls */}
       <button
         onClick={prevSlide}
-        className="absolute left-4 top-1/2 transform -translate-y-1/2 z-10 bg-white bg-opacity-20 hover:bg-opacity-30 text-white p-2 rounded-full transition-all duration-200"
+        className="absolute left-2 sm:left-4 top-1/2 -translate-y-1/2 z-10 bg-white/20 hover:bg-white/30 text-white p-2 rounded-full transition duration-300 backdrop-blur"
       >
         <ChevronLeft className="h-6 w-6" />
       </button>
       <button
         onClick={nextSlide}
-        className="absolute right-4 top-1/2 transform -translate-y-1/2 z-10 bg-white bg-opacity-20 hover:bg-opacity-30 text-white p-2 rounded-full transition-all duration-200"
+        className="absolute right-2 sm:right-4 top-1/2 -translate-y-1/2 z-10 bg-white/20 hover:bg-white/30 text-white p-2 rounded-full transition duration-300 backdrop-blur"
       >
         <ChevronRight className="h-6 w-6" />
       </button>
 
       {/* Content */}
-      <div className="relative z-10 h-full flex items-center">
-        <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 w-full">
-          <div className="grid grid-cols-1 lg:grid-cols-2 gap-12 items-center">
-            {/* Left Content */}
-            <div className="text-white">
-              <h1 className="text-5xl lg:text-6xl font-bold mb-6 leading-tight">{slides[currentSlide].title}</h1>
-              <p className="text-xl mb-8 text-gray-200">{slides[currentSlide].subtitle}</p>
-              <div className="flex flex-col sm:flex-row gap-4">
-                <button className="bg-blue-600 hover:bg-blue-700 text-white px-8 py-3 rounded-lg font-semibold transition-colors duration-200">
-                  Book Appointment
-                </button>
-                <button className="border-2 border-white text-white hover:bg-white hover:text-gray-900 px-8 py-3 rounded-lg font-semibold transition-all duration-200">
-                  Learn More
-                </button>
+      <div className="relative z-10 flex items-center justify-center min-h-[calc(100vh-6rem)] px-4 sm:px-6 lg:px-8">
+        <div className="grid grid-cols-1 lg:grid-cols-2 items-center gap-10 max-w-7xl w-full">
+          {/* Left Content */}
+          <div className="text-white drop-shadow-lg text-center lg:text-left">
+            <h1 className="text-3xl sm:text-5xl lg:text-6xl font-bold mb-6 leading-tight">
+              {slides[currentSlide].title}
+            </h1>
+            <p className="text-lg sm:text-xl mb-8 text-gray-200">
+              {slides[currentSlide].subtitle}
+            </p>
+            <div className="flex flex-col sm:flex-row justify-center lg:justify-start gap-4">
+              <button className="bg-blue-600 hover:bg-blue-700 px-6 py-3 text-white font-semibold rounded-lg shadow-md transition duration-300">
+                Book Appointment
+              </button>
+              <button className="border border-white text-white px-6 py-3 hover:bg-white hover:text-gray-900 rounded-lg font-semibold transition duration-300">
+                Learn More
+              </button>
+            </div>
+          </div>
+
+          {/* Right Form */}
+          <div className="bg-white/90 backdrop-blur-md rounded-2xl shadow-2xl p-6 sm:p-8 max-w-md w-full mx-auto">
+            <h3 className="text-xl font-bold text-gray-900 mb-4 text-center">Quick Booking</h3>
+            <form onSubmit={handleSubmit} className="space-y-4">
+              <div className="relative">
+                <User className="absolute left-3 top-2.5 h-4 w-4 text-gray-400" />
+                <input
+                  type="text"
+                  required
+                  placeholder="Full Name"
+                  value={formData.name}
+                  onChange={(e) => setFormData({ ...formData, name: e.target.value })}
+                  className="w-full pl-10 pr-3 py-2 text-sm border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:outline-none"
+                />
               </div>
-            </div>
 
-            {/* Right Form - Compact Design */}
-            <div className="bg-white rounded-xl shadow-2xl p-6 max-w-sm mx-auto">
-              <h3 className="text-xl font-bold text-gray-900 mb-4 text-center">Quick Booking</h3>
-              <form onSubmit={handleSubmit} className="space-y-3">
-                <div>
-                  <div className="relative">
-                    <User className="absolute left-3 top-2.5 h-4 w-4 text-gray-400" />
-                    <input
-                      type="text"
-                      required
-                      value={formData.name}
-                      onChange={(e) => setFormData({ ...formData, name: e.target.value })}
-                      className="w-full pl-9 pr-3 py-2 text-sm border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-transparent"
-                      placeholder="Full Name"
-                    />
-                  </div>
-                </div>
+              <input
+                type="email"
+                required
+                placeholder="Email Address"
+                value={formData.email}
+                onChange={(e) => setFormData({ ...formData, email: e.target.value })}
+                className="w-full px-3 py-2 text-sm border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:outline-none"
+              />
 
-                <div>
+              <input
+                type="tel"
+                required
+                placeholder="Phone Number"
+                value={formData.phone}
+                onChange={(e) => setFormData({ ...formData, phone: e.target.value })}
+                className="w-full px-3 py-2 text-sm border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:outline-none"
+              />
+
+              <select
+                value={formData.service}
+                onChange={(e) => setFormData({ ...formData, service: e.target.value })}
+                className="w-full px-3 py-2 text-sm border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:outline-none"
+              >
+                <option value="doctor-consultation">Doctor Consultation</option>
+                <option value="blood-test">Blood Test</option>
+                <option value="xray">X-Ray</option>
+              </select>
+
+              <div className="grid grid-cols-2 gap-3">
+                <div className="relative">
+                  <Calendar className="absolute left-3 top-2.5 h-4 w-4 text-gray-400" />
                   <input
-                    type="email"
+                    type="date"
                     required
-                    value={formData.email}
-                    onChange={(e) => setFormData({ ...formData, email: e.target.value })}
-                    className="w-full px-3 py-2 text-sm border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-transparent"
-                    placeholder="Email Address"
+                    value={formData.date}
+                    onChange={(e) => setFormData({ ...formData, date: e.target.value })}
+                    className="w-full pl-10 pr-3 py-2 text-sm border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:outline-none"
                   />
                 </div>
-
-                <div>
+                <div className="relative">
+                  <Clock className="absolute left-3 top-2.5 h-4 w-4 text-gray-400" />
                   <input
-                    type="tel"
+                    type="time"
                     required
-                    value={formData.phone}
-                    onChange={(e) => setFormData({ ...formData, phone: e.target.value })}
-                    className="w-full px-3 py-2 text-sm border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-transparent"
-                    placeholder="Phone Number"
+                    value={formData.time}
+                    onChange={(e) => setFormData({ ...formData, time: e.target.value })}
+                    className="w-full pl-10 pr-3 py-2 text-sm border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:outline-none"
                   />
                 </div>
+              </div>
 
-                <div>
-                  <select
-                    value={formData.service}
-                    onChange={(e) => setFormData({ ...formData, service: e.target.value })}
-                    className="w-full px-3 py-2 text-sm border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-transparent"
-                  >
-                    <option value="doctor-consultation">Doctor Consultation</option>
-                    <option value="blood-test">Blood Test</option>
-                    <option value="xray">X-Ray</option>
-                  </select>
-                </div>
-
-                <div className="grid grid-cols-2 gap-2">
-                  <div className="relative">
-                    <Calendar className="absolute left-3 top-2.5 h-4 w-4 text-gray-400" />
-                    <input
-                      type="date"
-                      required
-                      value={formData.date}
-                      onChange={(e) => setFormData({ ...formData, date: e.target.value })}
-                      className="w-full pl-9 pr-3 py-2 text-sm border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-transparent"
-                    />
-                  </div>
-                  <div className="relative">
-                    <Clock className="absolute left-3 top-2.5 h-4 w-4 text-gray-400" />
-                    <input
-                      type="time"
-                      required
-                      value={formData.time}
-                      onChange={(e) => setFormData({ ...formData, time: e.target.value })}
-                      className="w-full pl-9 pr-3 py-2 text-sm border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-transparent"
-                    />
-                  </div>
-                </div>
-
-                <button
-                  type="submit"
-                  className="w-full bg-blue-600 hover:bg-blue-700 text-white py-2.5 rounded-lg font-semibold text-sm transition-colors duration-200"
-                >
-                  Book Appointment
-                </button>
-              </form>
-            </div>
+              <button
+                type="submit"
+                className="w-full bg-blue-600 hover:bg-blue-700 text-white py-2.5 rounded-lg font-semibold text-sm transition duration-300"
+              >
+                Book Appointment
+              </button>
+            </form>
           </div>
         </div>
       </div>
 
-      {/* Slide Indicators */}
-      <div className="absolute bottom-8 left-1/2 transform -translate-x-1/2 flex space-x-2 z-10">
+      {/* Indicators */}
+      <div className="absolute bottom-6 left-1/2 -translate-x-1/2 flex space-x-2 z-10">
         {slides.map((_, index) => (
           <button
             key={index}
             onClick={() => setCurrentSlide(index)}
-            className={`w-3 h-3 rounded-full transition-all duration-200 ${
-              index === currentSlide ? "bg-white" : "bg-white bg-opacity-50"
+            className={`w-3 h-3 rounded-full transition-all duration-300 ${
+              index === currentSlide ? "bg-white" : "bg-white/50"
             }`}
           />
         ))}
