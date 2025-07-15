@@ -1,6 +1,6 @@
 "use client"
 
-import { MessageCircle, Calendar } from "lucide-react"
+import WhatsAppIcon from "@mui/icons-material/WhatsApp"
 
 export default function DoctorConsultationSpecialties() {
   const doctors = [
@@ -168,59 +168,39 @@ export default function DoctorConsultationSpecialties() {
     window.open(whatsappUrl, "_blank")
   }
 
-  const handleBookNow = (doctor) => {
-    // Scroll to booking form or redirect to booking page
-    const bookingSection = document.getElementById("booking-section")
-    if (bookingSection) {
-      bookingSection.scrollIntoView({ behavior: "smooth" })
-    }
-  }
-
   return (
-    <section id="doctors-list" className="py-20 bg-gray-50">
+    <section id="doctors-list" className="py-20 bg-white">
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
         <div className="text-center mb-16">
-          <h2 className="text-4xl font-bold text-gray-900 mb-4">Our Expert Doctors</h2>
-          <p className="text-xl text-gray-600 max-w-3xl mx-auto">
-            Connect with our qualified doctors across various specialties. Book your consultation or chat directly on
-            WhatsApp.
+          <h2 className="text-4xl font-bold text-teal-900 mb-4">Our Expert Doctors</h2>
+          <p className="text-xl text-teal-700 max-w-3xl mx-auto">
+            Connect with our qualified doctors across various specialties. Chat directly on WhatsApp for instant
+            consultation.
           </p>
         </div>
-
         <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-6">
           {doctors.map((doctor) => (
             <div
               key={doctor.id}
-              className="bg-white rounded-lg shadow-lg overflow-hidden hover:shadow-xl transition-shadow duration-300"
+              className="bg-white rounded-lg shadow-lg border border-teal-100 overflow-hidden hover:shadow-xl hover:border-teal-200 transition-all duration-300"
             >
               <div className="relative">
                 <img src={doctor.image || "/placeholder.svg"} alt={doctor.name} className="w-full h-48 object-cover" />
-                <div className="absolute top-4 right-4 bg-white rounded-full px-2 py-1 text-sm font-semibold text-gray-700">
+                <div className="absolute top-4 right-4 bg-white rounded-full px-2 py-1 text-sm font-semibold text-teal-700 shadow-md">
                   ⭐ {doctor.rating}
                 </div>
               </div>
-
               <div className="p-6">
-                <h3 className="text-xl font-bold text-gray-900 mb-1">{doctor.name}</h3>
-                <p className="text-blue-600 font-semibold mb-2">{doctor.specialization}</p>
-                <p className="text-gray-600 text-sm mb-2">Experience: {doctor.experience}</p>
-                <p className="text-gray-600 text-sm mb-2">Fee: {doctor.consultationFee}</p>
-                <p className="text-gray-600 text-sm mb-4">{doctor.availability}</p>
-
+                <h3 className="text-xl font-bold text-teal-900 mb-1">{doctor.name}</h3>
+                <p className="text-teal-600 font-semibold mb-2">{doctor.specialization}</p>
+                <p className="text-teal-700 text-sm mb-2">Experience: {doctor.experience}</p>
+                <p className="text-teal-700 text-sm mb-4">{doctor.availability}</p>
                 <div className="space-y-2">
                   <button
-                    onClick={() => handleBookNow(doctor)}
-                    className="w-full bg-blue-600 hover:bg-blue-700 text-white py-2 px-4 rounded-lg font-semibold transition-colors duration-200 flex items-center justify-center"
-                  >
-                    <Calendar className="h-4 w-4 mr-2" />
-                    Book Now
-                  </button>
-
-                  <button
                     onClick={() => handleWhatsAppClick(doctor)}
-                    className="w-full bg-green-500 hover:bg-green-600 text-white py-2 px-4 rounded-lg font-semibold transition-colors duration-200 flex items-center justify-center"
+                    className="w-full bg-teal-600 hover:bg-teal-700 text-white py-3 px-4 rounded-lg font-semibold transition-colors duration-200 flex items-center justify-center shadow-md hover:shadow-lg"
                   >
-                    <MessageCircle className="h-4 w-4 mr-2" />
+                    <WhatsAppIcon className="h-5 w-5 mr-2" />
                     Chat on WhatsApp
                   </button>
                 </div>
@@ -229,12 +209,6 @@ export default function DoctorConsultationSpecialties() {
           ))}
         </div>
 
-        <div className="text-center mt-12">
-          <p className="text-gray-600 mb-4">Can't find the right specialist? Contact us for more options.</p>
-          <button className="bg-blue-600 hover:bg-blue-700 text-white px-8 py-3 rounded-lg font-semibold transition-colors duration-200">
-            Contact Support
-          </button>
-        </div>
       </div>
     </section>
   )

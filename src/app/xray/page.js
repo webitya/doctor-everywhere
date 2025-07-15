@@ -9,7 +9,7 @@ export default function XrayPage() {
       <XrayHero />
       <HealthScansSlider />
       <XrayServices />
-      <XrayBooking />
+      {/* <XrayBooking /> */}
     </div>
   )
 }

@@ -7,7 +7,7 @@ export default function BloodTestPage() {
     <div>
       <BloodTestHero />
       <BloodTestPackages />
-      <BloodTestBooking />
+      {/* <BloodTestBooking /> */}
     </div>
   )
 }

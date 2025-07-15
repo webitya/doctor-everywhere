@@ -1,116 +1,136 @@
 "use client"
-import { useState } from "react"
-import { ChevronLeft, ChevronRight, X, Calendar, Clock, User, Phone, Mail, MessageCircle } from "lucide-react"
+
+import { useState, useEffect } from "react"
+import { ChevronLeft, ChevronRight } from "lucide-react"
+import WhatsAppIcon from "@mui/icons-material/WhatsApp" // Using MUI WhatsApp icon
 
 export default function HealthScansSlider() {
   const [currentSlide, setCurrentSlide] = useState(0)
-  const [isModalOpen, setIsModalOpen] = useState(false)
-  const [selectedTest, setSelectedTest] = useState(null)
-  const [formData, setFormData] = useState({
-    name: "",
-    email: "",
-    phone: "",
-    date: "",
-    time: "",
-    notes: "",
-  })
+  const [itemsPerView, setItemsPerView] = useState(1) // Default for smallest screens
+  const [touchStartX, setTouchStartX] = useState(0)
+  const [touchEndX, setTouchEndX] = useState(0)
 
-  // Array of health scans and imaging tests
   const healthScans = [
     {
       id: 1,
       name: "Ultrasound",
       price: "₹429",
-      icon: "🔊",
-      description: "Non-invasive imaging using sound waves for internal organ examination",
-      whatsappMessage: "Hello, I would like to book an Ultrasound scan. Please help me schedule an appointment.",
-      details: "Ultrasound uses high-frequency sound waves to create images of organs and structures inside the body.",
+      image: "/placeholder.svg?height=150&width=200&text=Ultrasound&bg-color=14b8a6",
+      description: "Non-invasive imaging using sound waves for internal organ examination.",
+      whatsappMessage: "Hello, I would like to book an Ultrasound scan (₹429). Please help me schedule an appointment.",
     },
     {
       id: 2,
       name: "CT Scan",
       price: "₹900",
-      icon: "🏥",
-      description: "Detailed cross-sectional images using X-ray technology",
-      whatsappMessage: "Hello, I need to book a CT Scan. Could you please help me schedule an appointment?",
-      details: "CT scan combines X-ray images taken from different angles to create cross-sectional images.",
+      image: "/placeholder.svg?height=150&width=200&text=CT+Scan&bg-color=0d9488",
+      description: "Detailed cross-sectional images using X-ray technology.",
+      whatsappMessage: "Hello, I need to book a CT Scan (₹900). Could you please help me schedule an appointment?",
     },
     {
       id: 3,
       name: "MRI Scan",
       price: "₹1499",
-      icon: "🧲",
-      description: "High-resolution imaging using magnetic fields and radio waves",
-      whatsappMessage: "Hello, I would like to book an MRI Scan. Please advise on available slots.",
-      details: "MRI uses strong magnetic fields and radio waves to generate detailed images of organs and tissues.",
+      image: "/placeholder.svg?height=150&width=200&text=MRI+Scan&bg-color=14b8a6",
+      description: "High-resolution imaging using magnetic fields and radio waves.",
+      whatsappMessage: "Hello, I would like to book an MRI Scan (₹1499). Please advise on available slots.",
     },
     {
       id: 4,
       name: "ECG Test",
       price: "₹149",
-      icon: "💓",
-      description: "Heart rhythm and electrical activity monitoring",
-      whatsappMessage: "Hello, I need an ECG Test for heart monitoring. Please help me book an appointment.",
-      details: "ECG records the electrical activity of the heart to detect heart problems.",
+      image: "/placeholder.svg?height=150&width=200&text=ECG+Test&bg-color=0d9488",
+      description: "Heart rhythm and electrical activity monitoring.",
+      whatsappMessage: "Hello, I need an ECG Test (₹149) for heart monitoring. Please help me book an appointment.",
     },
     {
       id: 5,
       name: "Echo Test",
       price: "₹1350",
-      icon: "❤️",
-      description: "Ultrasound examination of the heart structure and function",
-      whatsappMessage: "Hello, I would like to book an Echo Test for heart examination. Please help me schedule.",
-      details: "Echocardiogram uses ultrasound to create images of the heart's chambers, valves, and walls.",
+      image: "/placeholder.svg?height=150&width=200&text=Echo+Test&bg-color=14b8a6",
+      description: "Ultrasound examination of the heart structure and function.",
+      whatsappMessage:
+        "Hello, I would like to book an Echo Test (₹1350) for heart examination. Please help me schedule.",
     },
     {
       id: 6,
       name: "TMT Test",
       price: "₹1109",
-      icon: "🏃",
-      description: "Treadmill test to evaluate heart function during exercise",
-      whatsappMessage: "Hello, I need a TMT Test (Treadmill Test). Could you please help me book an appointment?",
-      details: "TMT evaluates heart function and blood flow during physical stress on a treadmill.",
+      image: "/placeholder.svg?height=150&width=200&text=TMT+Test&bg-color=0d9488",
+      description: "Treadmill test to evaluate heart function during exercise.",
+      whatsappMessage: "Hello, I need a TMT Test (₹1109). Could you please help me book an appointment?",
     },
     {
       id: 7,
       name: "X-Ray",
       price: "₹299",
-      icon: "🦴",
-      description: "Basic imaging for bones, chest, and internal structures",
-      whatsappMessage: "Hello, I would like to book an X-Ray examination. Please help me schedule an appointment.",
-      details: "X-Ray uses electromagnetic radiation to create images of bones and internal structures.",
+      image: "/placeholder.svg?height=150&width=200&text=X-Ray&bg-color=14b8a6",
+      description: "Basic imaging for bones, chest, and internal structures.",
+      whatsappMessage:
+        "Hello, I would like to book an X-Ray examination (₹299). Please help me schedule an appointment.",
     },
     {
       id: 8,
       name: "Mammography",
       price: "₹1200",
-      icon: "🎗️",
-      description: "Specialized breast imaging for early cancer detection",
-      whatsappMessage: "Hello, I need to book a Mammography screening. Please help me schedule an appointment.",
-      details: "Mammography is specialized breast imaging used for early detection of breast cancer.",
+      image: "/placeholder.svg?height=150&width=200&text=Mammography&bg-color=0d9488",
+      description: "Specialized breast imaging for early cancer detection.",
+      whatsappMessage: "Hello, I need to book a Mammography screening (₹1200). Please help me schedule an appointment.",
     },
     {
       id: 9,
       name: "Bone Density",
       price: "₹800",
-      icon: "🦴",
-      description: "DEXA scan to measure bone mineral density",
-      whatsappMessage: "Hello, I would like to book a Bone Density test. Please advise on availability.",
-      details: "DEXA scan measures bone mineral density to diagnose osteoporosis and fracture risk.",
+      image: "/placeholder.svg?height=150&width=200&text=Bone+Density&bg-color=14b8a6",
+      description: "DEXA scan to measure bone mineral density.",
+      whatsappMessage: "Hello, I would like to book a Bone Density test (₹800). Please advise on availability.",
     },
     {
       id: 10,
       name: "PET Scan",
       price: "₹15000",
-      icon: "🔬",
-      description: "Advanced imaging to detect cancer and other diseases",
-      whatsappMessage: "Hello, I need to book a PET Scan. Could you please help me schedule an appointment?",
-      details: "PET scan uses radioactive sugar to detect cancer cells and other diseases in the body.",
+      image: "/placeholder.svg?height=150&width=200&text=PET+Scan&bg-color=0d9488",
+      description: "Advanced imaging to detect cancer and other diseases.",
+      whatsappMessage: "Hello, I need to book a PET Scan (₹15000). Could you please help me schedule an appointment?",
     },
   ]
 
-  const itemsPerSlide = 6
-  const totalSlides = Math.ceil(healthScans.length / itemsPerSlide)
+  const totalSlides = Math.ceil(healthScans.length / itemsPerView)
+
+  // Determine items per view based on screen width
+  useEffect(() => {
+    const handleResize = () => {
+      if (window.innerWidth >= 1024) {
+        // lg and up
+        setItemsPerView(4)
+      } else if (window.innerWidth >= 768) {
+        // md
+        setItemsPerView(3)
+      } else if (window.innerWidth >= 640) {
+        // sm
+        setItemsPerView(2)
+      } else {
+        // xs
+        setItemsPerView(1)
+      }
+      // Reset currentSlide to ensure it's within bounds for new itemsPerView
+      setCurrentSlide(0)
+    }
+
+    handleResize() // Set initial itemsPerView
+    window.addEventListener("resize", handleResize)
+    return () => window.removeEventListener("resize", handleResize)
+  }, [])
+
+  // This hook will manage the auto-slide interval.
+  useEffect(() => {
+    const interval = setInterval(() => {
+      setCurrentSlide((prev) => (prev + 1) % totalSlides)
+    }, 2000) // Auto-slide every 2 seconds
+
+    // Clear the interval when the component unmounts or when the slide changes
+    return () => clearInterval(interval)
+  }, [currentSlide, totalSlides]) // Re-run effect if currentSlide or totalSlides changes
 
   const nextSlide = () => {
     setCurrentSlide((prev) => (prev + 1) % totalSlides)
@@ -121,13 +141,15 @@ export default function HealthScansSlider() {
   }
 
   const getCurrentItems = () => {
-    const startIndex = currentSlide * itemsPerSlide
-    return healthScans.slice(startIndex, startIndex + itemsPerSlide)
-  }
+    const startIndex = currentSlide * itemsPerView
+    let currentItems = healthScans.slice(startIndex, startIndex + itemsPerView)
 
-  const handleViewDetails = (test) => {
-    setSelectedTest(test)
-    setIsModalOpen(true)
+    // If the current slice is not full, take elements from the beginning to fill it
+    if (currentItems.length < itemsPerView) {
+      const remainingNeeded = itemsPerView - currentItems.length
+      currentItems = [...currentItems, ...healthScans.slice(0, remainingNeeded)]
+    }
+    return currentItems
   }
 
   const handleWhatsAppClick = (test) => {
@@ -136,220 +158,100 @@ export default function HealthScansSlider() {
     window.open(whatsappUrl, "_blank")
   }
 
-  const handleSubmit = async (e) => {
-    e.preventDefault()
-    try {
-      const response = await fetch("/api/booking", {
-        method: "POST",
-        headers: { "Content-Type": "application/json" },
-        body: JSON.stringify({
-          ...formData,
-          service: "Health Scan",
-          testType: selectedTest.name,
-          notes: `${selectedTest.name} - ${selectedTest.price}. ${formData.notes}`,
-        }),
-      })
+  // Touch event handlers for swiping
+  const handleTouchStart = (e) => {
+    setTouchStartX(e.touches[0].clientX)
+  }
 
-      if (response.ok) {
-        alert("Booking request sent successfully!")
-        setFormData({ name: "", email: "", phone: "", date: "", time: "", notes: "" })
-        setIsModalOpen(false)
-      }
-    } catch (error) {
-      alert("Failed to send booking request")
+  const handleTouchMove = (e) => {
+    setTouchEndX(e.touches[0].clientX)
+  }
+
+  const handleTouchEnd = () => {
+    if (touchStartX - touchEndX > 50) {
+      // Swiped left
+      nextSlide()
+    } else if (touchEndX - touchStartX > 50) {
+      // Swiped right
+      prevSlide()
     }
+    // Reset touch positions
+    setTouchStartX(0)
+    setTouchEndX(0)
   }
 
   return (
-    <>
-      <section className="py-20 bg-gray-50">
-        <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-          <div className="text-center mb-12">
-            <h2 className="text-4xl font-bold text-teal-600 mb-4">Health Scans & Imaging Tests</h2>
-            <p className="text-xl text-gray-600 max-w-3xl mx-auto">
-              Comprehensive diagnostic imaging services with advanced technology and expert analysis
-            </p>
-          </div>
-
-          <div className="relative">
-            {/* Slider Container */}
-            <div className="overflow-hidden">
-              <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 xl:grid-cols-6 gap-6">
-                {getCurrentItems().map((test) => (
-                  <div
-                    key={test.id}
-                    className="bg-white rounded-lg shadow-lg p-6 text-center hover:shadow-xl transition-shadow duration-300"
-                  >
-                    <div className="text-4xl mb-4">{test.icon}</div>
-                    <h3 className="text-lg font-bold text-gray-900 mb-2">{test.name}</h3>
-                    <p className="text-sm text-gray-600 mb-3">{test.description}</p>
+    <section className="py-16 bg-gray-50">
+      <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+        <div className="text-center mb-12">
+          <h2 className="text-4xl font-bold text-teal-600 mb-4">Health Scans & Imaging Tests</h2>
+          <p className="text-xl text-gray-600 max-w-3xl mx-auto">
+            Comprehensive diagnostic imaging services with advanced technology and expert analysis
+          </p>
+        </div>
+        <div
+          className="relative"
+          onTouchStart={handleTouchStart}
+          onTouchMove={handleTouchMove}
+          onTouchEnd={handleTouchEnd}
+        >
+          {/* Slider Container */}
+          <div className="overflow-hidden">
+            <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-6">
+              {getCurrentItems().map((test) => (
+                <div
+                  key={test.id}
+                  className="relative bg-white rounded-xl shadow-md overflow-hidden group cursor-default"
+                >
+                  <div className="relative h-40 w-full">
+                    <img
+                      src={test.image || "/placeholder.svg"}
+                      alt={test.name}
+                      className="w-full h-full object-cover"
+                    />
+                    <div className="absolute inset-0 bg-gradient-to-t from-teal-900/70 to-transparent flex items-end p-4">
+                      <h3 className="text-xl font-bold text-white">{test.name}</h3>
+                    </div>
+                  </div>
+                  <div className="p-4">
+                    <p className="text-sm text-gray-600 mb-3 line-clamp-2">{test.description}</p>
                     <div className="text-lg font-bold text-teal-600 mb-4">Starting @ {test.price}</div>
-
-                    <div className="space-y-2">
-                      <button
-                        onClick={() => handleViewDetails(test)}
-                        className="w-full bg-gray-100 hover:bg-gray-200 text-gray-800 py-2 px-4 rounded-lg font-medium transition-colors duration-200"
-                      >
-                        View Details
-                      </button>
+                    <div className="space-y-3">
                       <button
                         onClick={() => handleWhatsAppClick(test)}
-                        className="w-full bg-green-500 hover:bg-green-600 text-white py-2 px-4 rounded-lg font-medium transition-colors duration-200 flex items-center justify-center"
+                        className="w-full bg-teal-600 text-white py-2.5 px-4 rounded-lg font-semibold flex items-center justify-center shadow-md cursor-pointer hover:bg-teal-700 transition-colors duration-200"
                       >
-                        <MessageCircle className="h-4 w-4 mr-1" />
+                        <WhatsAppIcon className="h-5 w-5 mr-2" />
                         WhatsApp
                       </button>
                     </div>
                   </div>
-                ))}
-              </div>
+                </div>
+              ))}
             </div>
-
-            {/* Navigation Arrows */}
-            {totalSlides > 1 && (
-              <div className="flex justify-center mt-8 space-x-4">
-                <button
-                  onClick={prevSlide}
-                  className="bg-teal-600 hover:bg-teal-700 text-white p-3 rounded-full transition-colors duration-200"
-                >
-                  <ChevronLeft className="h-5 w-5" />
-                </button>
-                <button
-                  onClick={nextSlide}
-                  className="bg-teal-600 hover:bg-teal-700 text-white p-3 rounded-full transition-colors duration-200"
-                >
-                  <ChevronRight className="h-5 w-5" />
-                </button>
-              </div>
-            )}
-
-            {/* Slide Indicators */}
-            {totalSlides > 1 && (
-              <div className="flex justify-center mt-4 space-x-2">
-                {Array.from({ length: totalSlides }).map((_, index) => (
-                  <button
-                    key={index}
-                    onClick={() => setCurrentSlide(index)}
-                    className={`w-3 h-3 rounded-full transition-colors duration-200 ${
-                      index === currentSlide ? "bg-teal-600" : "bg-gray-300"
-                    }`}
-                  />
-                ))}
-              </div>
-            )}
           </div>
-        </div>
-      </section>
-
-      {/* Details Modal */}
-      {isModalOpen && selectedTest && (
-        <div className="fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center z-50 p-4">
-          <div className="bg-white rounded-lg max-w-md w-full max-h-[90vh] overflow-y-auto">
-            <div className="flex justify-between items-center p-6 border-b">
-              <h3 className="text-xl font-bold text-gray-900">Book {selectedTest.name}</h3>
-              <button onClick={() => setIsModalOpen(false)} className="text-gray-400 hover:text-gray-600">
-                <X className="h-6 w-6" />
+          {/* Navigation Arrows */}
+          {totalSlides > 1 && (
+            <>
+              <button
+                onClick={prevSlide}
+                className="absolute left-0 top-1/2 -translate-y-1/2 bg-teal-600 hover:bg-teal-700 text-white p-2 rounded-full shadow-lg z-10 transition-colors duration-200 hidden md:block"
+                aria-label="Previous slide"
+              >
+                <ChevronLeft className="h-6 w-6" />
               </button>
-            </div>
-
-            <div className="p-6">
-              <div className="text-center mb-6">
-                <div className="text-4xl mb-2">{selectedTest.icon}</div>
-                <h4 className="text-lg font-semibold text-gray-900">{selectedTest.name}</h4>
-                <p className="text-teal-600 font-bold text-xl">{selectedTest.price}</p>
-                <p className="text-gray-600 mt-2">{selectedTest.details}</p>
-              </div>
-
-              <form onSubmit={handleSubmit} className="p-4 space-y-3">
-                <div className="grid grid-cols-1 md:grid-cols-2 gap-3">
-                  <div className="relative">
-                    <User className="absolute left-3 top-2.5 h-4 w-4 text-gray-400" />
-                    <input
-                      type="text"
-                      required
-                      value={formData.name}
-                      onChange={(e) => setFormData({ ...formData, name: e.target.value })}
-                      className="w-full pl-9 pr-3 py-2 text-sm border border-gray-300 rounded-lg focus:ring-2 focus:ring-teal-500 focus:border-transparent"
-                      placeholder="Full Name"
-                    />
-                  </div>
-
-                  <div className="relative">
-                    <Mail className="absolute left-3 top-2.5 h-4 w-4 text-gray-400" />
-                    <input
-                      type="email"
-                      required
-                      value={formData.email}
-                      onChange={(e) => setFormData({ ...formData, email: e.target.value })}
-                      className="w-full pl-9 pr-3 py-2 text-sm border border-gray-300 rounded-lg focus:ring-2 focus:ring-teal-500 focus:border-transparent"
-                      placeholder="Email"
-                    />
-                  </div>
-                </div>
-
-                <div className="relative">
-                  <Phone className="absolute left-3 top-2.5 h-4 w-4 text-gray-400" />
-                  <input
-                    type="tel"
-                    required
-                    value={formData.phone}
-                    onChange={(e) => setFormData({ ...formData, phone: e.target.value })}
-                    className="w-full pl-9 pr-3 py-2 text-sm border border-gray-300 rounded-lg focus:ring-2 focus:ring-teal-500 focus:border-transparent"
-                    placeholder="Phone Number"
-                  />
-                </div>
-
-                <div className="grid grid-cols-2 gap-3">
-                  <div className="relative">
-                    <Calendar className="absolute left-3 top-2.5 h-4 w-4 text-gray-400" />
-                    <input
-                      type="date"
-                      required
-                      value={formData.date}
-                      onChange={(e) => setFormData({ ...formData, date: e.target.value })}
-                      className="w-full pl-9 pr-3 py-2 text-sm border border-gray-300 rounded-lg focus:ring-2 focus:ring-teal-500 focus:border-transparent"
-                    />
-                  </div>
-                  <div className="relative">
-                    <Clock className="absolute left-3 top-2.5 h-4 w-4 text-gray-400" />
-                    <input
-                      type="time"
-                      required
-                      value={formData.time}
-                      onChange={(e) => setFormData({ ...formData, time: e.target.value })}
-                      className="w-full pl-9 pr-3 py-2 text-sm border border-gray-300 rounded-lg focus:ring-2 focus:ring-teal-500 focus:border-transparent"
-                    />
-                  </div>
-                </div>
-
-                <textarea
-                  rows={2}
-                  value={formData.notes}
-                  onChange={(e) => setFormData({ ...formData, notes: e.target.value })}
-                  className="w-full px-3 py-2 text-sm border border-gray-300 rounded-lg focus:ring-2 focus:ring-teal-500 focus:border-transparent resize-none"
-                  placeholder="Any specific requirements (optional)"
-                />
-
-                <div className="flex space-x-3 pt-2">
-                  <button
-                    type="button"
-                    onClick={() => setIsModalOpen(false)}
-                    className="flex-1 px-4 py-2 border border-gray-300 text-gray-700 rounded-lg hover:bg-gray-50 transition-colors duration-200 text-sm"
-                  >
-                    Cancel
-                  </button>
-                  <button
-                    type="submit"
-                    className="flex-1 px-4 py-2 bg-teal-600 hover:bg-teal-700 text-white rounded-lg transition-colors duration-200 text-sm font-medium"
-                  >
-                    Book Test
-                  </button>
-                </div>
-              </form>
-            </div>
-          </div>
+              <button
+                onClick={nextSlide}
+                className="absolute right-0 top-1/2 -translate-y-1/2 bg-teal-600 hover:bg-teal-700 text-white p-2 rounded-full shadow-lg z-10 transition-colors duration-200 hidden md:block"
+                aria-label="Next slide"
+              >
+                <ChevronRight className="h-6 w-6" />
+              </button>
+            </>
+          )}
+          {/* Removed Slide Indicators */}
         </div>
-      )}
-    </>
+      </div>
+    </section>
   )
 }
