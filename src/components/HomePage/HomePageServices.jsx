@@ -8,21 +8,21 @@ export default function HomePageServices() {
       title: "Doctor Consultation",
       description: "Connect with qualified doctors for online consultations and medical advice.",
       link: "/doctor-consultation",
-      color: "bg-blue-500",
+      color: "bg-teal-600",
     },
     {
       icon: TestTube,
       title: "Blood Test",
       description: "Comprehensive blood testing packages with accurate results and fast turnaround.",
       link: "/blood-test",
-      color: "bg-red-500",
+      color: "bg-rose-500",
     },
     {
       icon: X,
       title: "X-Ray Services",
       description: "Advanced imaging services with state-of-the-art equipment and expert analysis.",
       link: "/xray",
-      color: "bg-green-500",
+      color: "bg-emerald-600",
     },
   ]
 
@@ -45,38 +45,37 @@ export default function HomePageServices() {
   ]
 
   return (
-    <section className="py-20 bg-gray-50">
+    <section className="py-20 bg-white">
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-        {/* Services Section */}
+        {/* Header */}
         <div className="text-center mb-16">
           <h2 className="text-4xl font-bold text-gray-900 mb-4">Our Medical Services</h2>
           <p className="text-xl text-gray-600 max-w-3xl mx-auto">
-            Comprehensive healthcare solutions designed to meet all your medical needs with convenience and quality
-            care.
+            Comprehensive healthcare solutions designed to meet all your medical needs with convenience and quality care.
           </p>
         </div>
 
+        {/* Services Cards */}
         <div className="grid grid-cols-1 md:grid-cols-3 gap-8 mb-20">
           {services.map((service, index) => {
-            const IconComponent = service.icon
+            const Icon = service.icon
             return (
               <div
                 key={index}
-                className="bg-white rounded-lg shadow-lg p-8 hover:shadow-xl transition-shadow duration-300"
+                className="group bg-white border border-gray-100 rounded-xl shadow-md hover:shadow-lg transition duration-300 p-6 flex flex-col justify-between"
               >
-                <div className={`${service.color} w-16 h-16 rounded-lg flex items-center justify-center mb-6`}>
-                  <IconComponent className="h-8 w-8 text-white" />
+                <div>
+                  <div className={`${service.color} w-14 h-14 rounded-xl flex items-center justify-center mb-6 shadow-lg`}>
+                    <Icon className="h-7 w-7 text-white" />
+                  </div>
+                  <h3 className="text-2xl font-bold text-gray-800 mb-3">{service.title}</h3>
+                  <p className="text-gray-600 mb-6">{service.description}</p>
                 </div>
-                <h3 className="text-2xl font-bold text-gray-900 mb-4">{service.title}</h3>
-                <p className="text-gray-600 mb-6">{service.description}</p>
                 <Link
                   href={service.link}
-                  className="inline-flex items-center text-blue-600 hover:text-blue-700 font-semibold"
+                  className="inline-block text-center w-full px-5 py-2 mt-auto bg-teal-600 text-white rounded-lg font-semibold hover:bg-teal-700 transition"
                 >
                   Learn More
-                  <svg className="ml-2 h-4 w-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                    <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M9 5l7 7-7 7" />
-                  </svg>
                 </Link>
               </div>
             )
@@ -90,13 +89,13 @@ export default function HomePageServices() {
 
         <div className="grid grid-cols-1 md:grid-cols-3 gap-8">
           {features.map((feature, index) => {
-            const IconComponent = feature.icon
+            const Icon = feature.icon
             return (
-              <div key={index} className="text-center">
-                <div className="bg-blue-100 w-16 h-16 rounded-full flex items-center justify-center mx-auto mb-4">
-                  <IconComponent className="h-8 w-8 text-blue-600" />
+              <div key={index} className="bg-teal-50 p-6 rounded-xl text-center shadow-sm hover:shadow-md transition">
+                <div className="bg-white w-14 h-14 rounded-full flex items-center justify-center mx-auto mb-4 shadow">
+                  <Icon className="h-7 w-7 text-teal-600" />
                 </div>
-                <h4 className="text-xl font-bold text-gray-900 mb-2">{feature.title}</h4>
+                <h4 className="text-xl font-semibold text-gray-800 mb-2">{feature.title}</h4>
                 <p className="text-gray-600">{feature.description}</p>
               </div>
             )

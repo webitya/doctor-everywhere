@@ -16,11 +16,11 @@ export default function Header() {
   ]
 
   return (
-    <header className="bg-white shadow sticky top-0 z-50">
-      {/* Top Bar (Hidden on small screens) */}
-      <div className="bg-blue-600 text-white text-sm py-2 hidden md:block">
+    <header className="sticky top-0 z-50 bg-white shadow-md">
+      {/* Top bar (desktop only) */}
+      <div className="hidden md:block bg-teal-600 text-white text-sm py-2">
         <div className="max-w-7xl mx-auto px-4 flex justify-between items-center">
-          <div className="flex items-center space-x-4">
+          <div className="flex items-center space-x-6">
             <div className="flex items-center">
               <Phone className="h-4 w-4 mr-1" />
               <span>+1 (555) 123-4567</span>
@@ -31,31 +31,31 @@ export default function Header() {
             </div>
           </div>
           <div>
-            <span>24/7 Emergency Services Available</span>
+            <span className="font-medium">24/7 Emergency Services Available</span>
           </div>
         </div>
       </div>
 
       {/* Main Header */}
       <div className="max-w-7xl mx-auto px-4 py-4 flex justify-between items-center">
-        <Link href="/" className="text-2xl font-bold text-blue-600">
+        <Link href="/" className="text-2xl font-bold text-teal-700">
           DoctorEveryWhere
         </Link>
 
-        {/* Desktop Navigation */}
+        {/* Desktop Nav */}
         <nav className="hidden md:flex items-center space-x-6">
           {navigation.map((item) => (
             <Link
               key={item.name}
               href={item.href}
-              className="text-gray-700 hover:text-blue-600 font-medium transition-colors duration-200"
+              className="text-gray-700 hover:text-teal-600 font-medium transition-colors duration-200"
             >
               {item.name}
             </Link>
           ))}
           <Link
             href="/contact-us"
-            className="bg-blue-600 text-white px-5 py-2 rounded-full shadow hover:bg-blue-700 transition duration-200 text-sm font-semibold"
+            className="bg-teal-600 text-white px-5 py-2 rounded-full shadow hover:bg-teal-700 transition text-sm font-semibold"
           >
             Contact Us
           </Link>
@@ -64,37 +64,37 @@ export default function Header() {
         {/* Mobile Menu Button */}
         <button
           onClick={() => setIsMenuOpen(true)}
-          className="md:hidden text-gray-700 hover:text-blue-600 focus:outline-none"
+          className="md:hidden text-gray-700 hover:text-teal-600 focus:outline-none"
         >
           <Menu className="h-6 w-6" />
         </button>
       </div>
 
-      {/* Mobile Overlay Drawer with Transition */}
+      {/* Mobile Slide-In Drawer */}
       <div
-        className={`fixed inset-0 z-50 bg-white transform transition-transform duration-300 ease-in-out ${
+        className={`fixed top-0 right-0 h-full w-72 bg-white z-[999] shadow-lg transition-transform duration-300 ease-in-out transform ${
           isMenuOpen ? "translate-x-0" : "translate-x-full"
         }`}
       >
-        <div className="flex justify-between items-center px-6 py-6 border-b">
-          <Link href="/" onClick={() => setIsMenuOpen(false)} className="text-2xl font-bold text-blue-600">
+        <div className="flex items-center justify-between px-6 py-5 border-b">
+          <Link href="/" onClick={() => setIsMenuOpen(false)} className="text-xl font-bold text-teal-700">
             DoctorEveryWhere
           </Link>
           <button
             onClick={() => setIsMenuOpen(false)}
-            className="text-gray-700 hover:text-blue-600"
+            className="text-gray-600 hover:text-teal-600"
           >
             <X className="h-6 w-6" />
           </button>
         </div>
 
-        <nav className="flex flex-col px-6 py-8 gap-6 text-lg">
+        <nav className="flex flex-col px-6 py-8 gap-5 text-base">
           {navigation.map((item) => (
             <Link
               key={item.name}
               href={item.href}
               onClick={() => setIsMenuOpen(false)}
-              className="text-gray-700 hover:text-blue-600 font-medium"
+              className="text-gray-700 hover:text-teal-600 font-medium transition-colors"
             >
               {item.name}
             </Link>
@@ -102,12 +102,20 @@ export default function Header() {
           <Link
             href="/contact-us"
             onClick={() => setIsMenuOpen(false)}
-            className="mt-4 bg-blue-600 text-white text-center py-3 rounded-full shadow hover:bg-blue-700 transition font-semibold"
+            className="mt-6 bg-teal-600 text-white text-center py-3 rounded-full shadow hover:bg-teal-700 transition font-semibold"
           >
             Contact Us
           </Link>
         </nav>
       </div>
+
+      {/* Backdrop when menu is open */}
+      {isMenuOpen && (
+        <div
+          className="fixed inset-0 z-[998] bg-black/30 backdrop-blur-sm md:hidden"
+          onClick={() => setIsMenuOpen(false)}
+        />
+      )}
     </header>
   )
 }
