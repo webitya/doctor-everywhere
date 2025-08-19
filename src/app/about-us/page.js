@@ -7,7 +7,7 @@ export default function AboutUsPage() {
     <div>
       <AboutUsHero />
       <AboutUsMission />
-      <AboutUsTeam />
+      {/* <AboutUsTeam /> */}
     </div>
   )
 }

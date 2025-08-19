@@ -24,12 +24,12 @@ const HomePageHero = () => {
     {
       title: "Doctor Consultation",
       subtitle: "Talk to certified doctors anytime",
-      image: "/images/homeslide2.jpg",
+      image: "/images/homeslide3.jpg",
     },
     {
       title: "Blood Test at Home",
       subtitle: "Fast and reliable test collection",
-      image: "/images/homeslide3.jpg",
+      image: "/images/homeslide2.jpg",
     },
   ]
 

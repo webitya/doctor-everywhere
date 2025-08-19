@@ -9,7 +9,7 @@ export default function StickyContactButtons() {
     <div className="fixed bottom-4 right-4 z-50 flex flex-col gap-3">
       {/* WhatsApp */}
       <a
-        href="https://wa.me/919693245941"
+        href="https://wa.me/919211013699"
         target="_blank"
         rel="noopener noreferrer"
         className="bg-green-500 hover:bg-green-600 text-white p-3 rounded-xl shadow-md flex items-center justify-center"
