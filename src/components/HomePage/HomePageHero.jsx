@@ -16,10 +16,29 @@ const HomePageHero = () => {
   const [showFormModal, setShowFormModal] = useState(false);
 
   const slides = [
+
     { title: "Advanced X-Ray Services", subtitle: "State-of-the-art imaging technology", image: "/images/homeslide1.jpg" },
     { title: "Doctor Consultation", subtitle: "Talk to certified doctors anytime", image: "/images/homeslide3.jpg" },
     { title: "Blood Test at Home", subtitle: "Fast and reliable test collection", image: "/images/homeslide2.jpg" },
   ];
+
+    {
+      title: "Advanced X-Ray Services",
+      subtitle: "State-of-the-art imaging technology",
+      image: "/images/homeslide1.jpg",
+    },
+    {
+      title: "Doctor Consultation",
+      subtitle: "Talk to certified doctors anytime",
+      image: "/images/homeslide3.jpg",
+    },
+    {
+      title: "Blood Test at Home",
+      subtitle: "Fast and reliable test collection",
+      image: "/images/homeslide2.jpg",
+    },
+  ]
+
 
   useEffect(() => {
     const interval = setInterval(() => {
