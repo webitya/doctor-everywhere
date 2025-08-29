@@ -1,13 +1,5 @@
 import Link from "next/link"
-import {
-  Phone,
-  Mail,
-  MapPin,
-  Facebook,
-  Twitter,
-  Instagram,
-  Linkedin,
-} from "lucide-react"
+import { Phone, Mail, MapPin, Facebook, Instagram, Linkedin } from "lucide-react"
 
 export default function Footer() {
   return (
@@ -18,17 +10,36 @@ export default function Footer() {
           <div>
             <h3 className="text-2xl font-bold text-teal-400 mb-4">DoctorEveryWhere</h3>
             <p className="text-gray-400 text-sm mb-5">
-            Your trusted partner in medical care in Gurgaon, Haryana, India. From online consultations to diagnostics—accessible anytime, anywhere.
+              Your trusted partner in medical care in Gurgaon, Haryana, India. From
+              online consultations to diagnostics—accessible anytime, anywhere.
             </p>
+
+            {/* Social Links */}
             <div className="flex gap-3">
-              {[Facebook, Twitter, Instagram, Linkedin].map((Icon, idx) => (
-                <div
-                  key={idx}
-                  className="bg-white/10 p-2 rounded-full hover:bg-teal-500 transition-colors cursor-pointer"
-                >
-                  <Icon className="h-4 w-4 text-gray-300 hover:text-white" />
-                </div>
-              ))}
+              <a
+                href="https://www.facebook.com/share/1N1h3LryoE/?mibextid=wwXIfr"
+                target="_blank"
+                rel="noopener noreferrer"
+                className="bg-white/10 p-2 rounded-full hover:bg-teal-500 transition-colors"
+              >
+                <Facebook className="h-4 w-4 text-gray-300 hover:text-white" />
+              </a>
+              <a
+                href="https://www.instagram.com/doctoreverywhere?igsh=MTdnaDZ4eWVseDA5aA%3D%3D&utm_source=qr"
+                target="_blank"
+                rel="noopener noreferrer"
+                className="bg-white/10 p-2 rounded-full hover:bg-teal-500 transition-colors"
+              >
+                <Instagram className="h-4 w-4 text-gray-300 hover:text-white" />
+              </a>
+              <a
+                href="https://www.linkedin.com/company/doctoreverywhere/"
+                target="_blank"
+                rel="noopener noreferrer"
+                className="bg-white/10 p-2 rounded-full hover:bg-teal-500 transition-colors"
+              >
+                <Linkedin className="h-4 w-4 text-gray-300 hover:text-white" />
+              </a>
             </div>
           </div>
 
@@ -73,21 +84,21 @@ export default function Footer() {
             <ul className="space-y-3 text-sm text-gray-400">
               <li className="flex items-start">
                 <Phone className="h-4 w-4 text-teal-400 mr-3 mt-0.5" />
-                <a href="tel:9211013699">  +91 9211013699 </a>
+                <a href="tel:9211013699">+91 9211013699</a>
               </li>
               <li className="flex items-start">
                 <Mail className="h-4 w-4 text-teal-400 mr-3 mt-0.5" />
-                  <a
+                <a
                   className="decoration-0"
                   href="https://mail.google.com/mail/?view=cm&fs=1&to=doctoreverywhere.in@gmail.com"
                   target="_blank"
-                  >
+                >
                   doctoreverywhere.in@gmail.com
-                  </a>
+                </a>
               </li>
               <li className="flex items-start">
                 <MapPin className="h-4 w-4 text-teal-400 mr-3 mt-0.5" />
-                  <a href="" target="_blank"> Gurgaon/Delhi NCR </a>
+                <span>Gurgaon/Delhi NCR</span>
               </li>
             </ul>
           </div>
