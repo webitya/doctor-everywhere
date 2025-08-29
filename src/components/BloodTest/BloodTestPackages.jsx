@@ -10,8 +10,6 @@ export default function BloodTestPackages() {
       price: "₹999",
       tests: ["Complete Blood Count (CBC)", "Basic Metabolic Panel", "Lipid Profile", "Thyroid Function Test"],
       popular: false,
-      whatsappMessage:
-        "Hello, I would like to book the Basic Health Panel (₹999) blood test package. Please let me know the available slots and procedure.",
     },
     {
       name: "Comprehensive Panel",
@@ -25,8 +23,6 @@ export default function BloodTestPackages() {
         "Iron Studies",
       ],
       popular: true,
-      whatsappMessage:
-        "Hello, I would like to book the Comprehensive Panel (₹1999) blood test package. Please help me schedule this test and provide details about the procedure.",
     },
     {
       name: "Executive Package",
@@ -40,8 +36,6 @@ export default function BloodTestPackages() {
         "Nutritional Assessment",
       ],
       popular: false,
-      whatsappMessage:
-        "Hello, I would like to book the Executive Package (₹2999) blood test. Please provide information about scheduling and preparation requirements.",
     },
     {
       name: "Women's Health Panel",
@@ -55,8 +49,6 @@ export default function BloodTestPackages() {
         "Bone Health Markers",
       ],
       popular: false,
-      whatsappMessage:
-        "Hello, I would like to book the Women's Health Panel (₹1799) blood test package. Please help me schedule this specialized test.",
     },
     {
       name: "Men's Health Panel",
@@ -70,8 +62,6 @@ export default function BloodTestPackages() {
         "Vitamin D Level",
       ],
       popular: false,
-      whatsappMessage:
-        "Hello, I would like to book the Men's Health Panel (₹1699) blood test package. Please provide details about scheduling and any preparation needed.",
     },
     {
       name: "Diabetes Monitoring",
@@ -84,8 +74,6 @@ export default function BloodTestPackages() {
         "Lipid Profile",
       ],
       popular: false,
-      whatsappMessage:
-        "Hello, I would like to book the Diabetes Monitoring (₹899) blood test package. Please help me schedule this test and advise on fasting requirements.",
     },
     {
       name: "Heart Health Package",
@@ -99,8 +87,6 @@ export default function BloodTestPackages() {
         "ECG Analysis",
       ],
       popular: false,
-      whatsappMessage:
-        "Hello, I would like to book the Heart Health Package (₹1499) blood test. Please provide information about scheduling and any special instructions.",
     },
     {
       name: "Senior Citizen Package",
@@ -115,8 +101,6 @@ export default function BloodTestPackages() {
         "Kidney & Liver Function",
       ],
       popular: false,
-      whatsappMessage:
-        "Hello, I would like to book the Senior Citizen Package (₹2499) blood test. Please help me schedule this comprehensive health screening.",
     },
     {
       name: "Immunity Booster Panel",
@@ -130,14 +114,11 @@ export default function BloodTestPackages() {
         "Antioxidant Status",
       ],
       popular: false,
-      whatsappMessage:
-        "Hello, I would like to book the Immunity Booster Panel (₹1299) blood test package. Please provide details about scheduling and preparation.",
     },
   ]
 
-  const handleWhatsAppClick = (pkg) => {
-    const message = encodeURIComponent(pkg.whatsappMessage)
-    const whatsappUrl = `https://wa.me/919693245941?text=${message}`
+  const handleWhatsAppClick = () => {
+    const whatsappUrl = `https://wa.me/message/NR7BCWYYMPAOC1`
     window.open(whatsappUrl, "_blank")
   }
 
@@ -154,7 +135,7 @@ export default function BloodTestPackages() {
           {packages.map((pkg, index) => (
             <div
               key={index}
-              className={`bg-white rounded-lg shadow-lg p-8 relative hover:shadow-xl transition-shadow duration-300 ${
+              className={`bg-white rounded-lg shadow-lg p-8 relative hover:shadow-xl transition-shadow duration-300 flex flex-col h-full ${
                 pkg.popular ? "ring-2 ring-teal-500" : ""
               }`}
             >
@@ -177,21 +158,20 @@ export default function BloodTestPackages() {
                   </li>
                 ))}
               </ul>
-              <button
-                onClick={() => handleWhatsAppClick(pkg)}
-                className={`w-full py-3 rounded-lg font-semibold transition-colors duration-200 flex items-center justify-center ${
-                  pkg.popular
-                    ? "bg-teal-600 hover:bg-teal-700 text-white"
-                    : "bg-gray-100 hover:bg-gray-200 text-gray-900 hover:bg-teal-50 hover:text-teal-700"
-                }`}
-              >
-                <WhatsAppIcon className="h-5 w-5 mr-2" />
-                Book Now
-              </button>
+
+              {/* ✅ Button stays at bottom of card */}
+              <div className="mt-auto">
+                <button
+                  onClick={handleWhatsAppClick}
+                  className="w-full py-3 rounded-lg font-semibold transition-colors duration-200 flex items-center justify-center bg-teal-600 hover:bg-teal-700 text-white shadow-md"
+                >
+                  <WhatsAppIcon className="h-5 w-5 mr-2" />
+                  Book Now
+                </button>
+              </div>
             </div>
           ))}
         </div>
-    
       </div>
     </section>
   )

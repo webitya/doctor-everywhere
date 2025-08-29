@@ -1,50 +1,57 @@
 import nodemailer from "nodemailer"
 
-export async function POST(request) {
+export async function POST(req) {
   try {
-    const { name, email, phone, message, service } = await request.json()
+    const { name, email, phone, message } = await req.json()
 
-    // Create transporter - Corrected from createTransporter to createTransport
+    if (!name || !email || !phone || !message) {
+      return new Response(
+        JSON.stringify({ message: "All fields are required" }),
+        { status: 400 }
+      )
+    }
+
+    // Nodemailer transporter
     const transporter = nodemailer.createTransport({
-      host: "smtp.gmail.com",
-      port: 587,
-      secure: false, // Use 'true' if your SMTP server requires SSL/TLS on port 465
+      service: "gmail",
       auth: {
         user: process.env.EMAIL_USER,
         pass: process.env.EMAIL_PASS,
       },
     })
 
-    // Email content
+    // Mail options
     const mailOptions = {
-      from: process.env.EMAIL_USER,
-      to: "doctoreverywhere.in@gmail.com",
-      subject: `New ${service || "Contact"} Request from ${name}`,
+      from: `"Doctor Everywhere" <${process.env.EMAIL_USER}>`,
+      to: process.env.EMAIL_USER, // Admin will receive messages
+      subject: `New Contact Form Submission from ${name}`,
+      text: `
+        Name: ${name}
+        Email: ${email}
+        Phone: ${phone}
+        Message: ${message}
+      `,
       html: `
-        <div style="font-family: sans-serif; line-height: 1.6; color: #333;">
-          <h2 style="color: #14b8a6;">New ${service || "Contact"} Request</h2>
-          <p><strong>Name:</strong> ${name}</p>
-          <p><strong>Email:</strong> ${email}</p>
-          <p><strong>Phone:</strong> ${phone}</p>
-          <p><strong>Service:</strong> ${service || "General Contact"}</p>
-          <p><strong>Message:</strong></p>
-          <p style="background-color: #f0fdfa; padding: 15px; border-left: 4px solid #14b8a6; border-radius: 4px;">${message}</p>
-          <p style="font-size: 0.9em; color: #777; margin-top: 20px;">This email was sent from your DoctorEveryWhere website contact form.</p>
-        </div>
+        <h2>New Contact Request</h2>
+        <p><strong>Name:</strong> ${name}</p>
+        <p><strong>Email:</strong> ${email}</p>
+        <p><strong>Phone:</strong> ${phone}</p>
+        <p><strong>Message:</strong> ${message}</p>
       `,
     }
 
+    // Send mail
     await transporter.sendMail(mailOptions)
 
-    return new Response(JSON.stringify({ success: true, message: "Email sent successfully" }), {
-      status: 200,
-      headers: { "Content-Type": "application/json" },
-    })
+    return new Response(
+      JSON.stringify({ message: "Message sent successfully!" }),
+      { status: 200 }
+    )
   } catch (error) {
-    console.error("Email error:", error)
-    return new Response(JSON.stringify({ success: false, message: "Failed to send email" }), {
-      status: 500,
-      headers: { "Content-Type": "application/json" },
-    })
+    console.error("Email sending error:", error)
+    return new Response(
+      JSON.stringify({ message: "Error sending message" }),
+      { status: 500 }
+    )
   }
 }
